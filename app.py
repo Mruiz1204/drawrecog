@@ -3,17 +3,12 @@ import streamlit as st
 import base64
 from openai import OpenAI
 import openai
-#from PIL import Image
-import tensorflow as tf
 from PIL import Image, ImageOps
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 
-Expert=" "
-profile_imgenh=" "
+Expert = " "
+profile_imgenh = " "
     
 def encode_image_to_base64(image_path):
     try:
@@ -25,12 +20,51 @@ def encode_image_to_base64(image_path):
 
 
 # Streamlit 
-st.set_page_config(page_title='Tablero Inteligente')
-st.title('Tablero Inteligente')
+try:
+    _icon = Image.open('logo_mr.png')
+except Exception:
+    _icon = "🎨"
+st.set_page_config(page_title='Tablero Inteligente · Miguel Ruiz', page_icon=_icon)
+
+# ---- Estilo personalizado: paleta azul petróleo + terracota (Miguel Ruiz) ----
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Inter:wght@300;400;600&display=swap');
+    .stApp {
+        background: linear-gradient(135deg, #1b3a4b 0%, #14303d 100%);
+        color: #e8eef0;
+        font-family: 'Inter', sans-serif;
+    }
+    [data-testid="stHeader"] { background: transparent !important; }
+    [data-testid="stToolbar"] { right: 1rem; }
+    .stApp, .stApp p, .stApp li, .stApp span, .stApp label,
+    .stMarkdown, [data-testid="stCaptionContainer"],
+    [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] * {
+        color: #e8eef0 !important;
+    }
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif !important; color: #e07a5f !important; }
+    .stTextInput input { background-color: #f3f6f7 !important; color: #14303d !important; }
+    section[data-testid="stSidebar"] { background: #12272f; }
+    section[data-testid="stSidebar"] * { color: #e8eef0 !important; }
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 { color: #e07a5f !important; }
+    .stButton>button {
+        background-color: #e07a5f; color: #fff !important; border-radius: 10px; border: none; font-weight: 600;
+    }
+    .stButton>button:hover { background-color: #c9583c; color: #fff !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown("<h2 style=\"font-family:'Montserrat',sans-serif; color:#f2cc8f; margin-bottom:0;\">Miguel Ruiz</h2>", unsafe_allow_html=True)
+st.title('Tablero Inteligente 🎨')
 with st.sidebar:
-    st.subheader("Acerca de:")
-    st.subheader("En esta aplicación veremos la capacidad que ahora tiene una máquina de interpretar un boceto")
-st.subheader("Dibuja el boceto en el panel  y presiona el botón para analizarla")
+    st.subheader("Acerca de")
+    st.write("En esta aplicación veremos la capacidad que tiene una máquina de interpretar un boceto dibujado a mano.")
+st.subheader("Dibuja el boceto en el panel y presiona el botón para analizarlo")
 
 # Add canvas component
 #bg_image = st.sidebar.file_uploader("Cargar Imagen:", type=["png", "jpg"])
@@ -57,7 +91,7 @@ canvas_result = st_canvas(
     key="canvas",
 )
 
-ke = st.text_input('Ingresa tu Clave')
+ke = st.text_input('Ingresa tu Clave de OpenAI', type="password")
 #os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
 os.environ['OPENAI_API_KEY'] = ke
 
